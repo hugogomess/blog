@@ -20,13 +20,13 @@ router.get('/categorias',(req, res) =>{
 
 router.post('/categorias/nova',(req, res) =>{
     var errors = [];
-
+    
     if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
         errors.push({message: 'Nome ínvalido! '});
     }
 
     if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
-        errors.push({message: 'Slug ínvalido!'});
+        errors.push({message: 'Slug ínvalido! '});
     }
 
     if(errors.length > 0){
@@ -49,7 +49,7 @@ router.post('/categorias/nova',(req, res) =>{
             res.redirect('/admin/categorias');
         }).catch((err) => {
             req.flash('errorMsg', 'Ocorreu um erro ao tentar criar uma nova categoria, tente novamente mais tarde!');
-            res.redirect('/admin/categorias');
+            res.redirect('/admin/categorias');       
         });
     }
 });

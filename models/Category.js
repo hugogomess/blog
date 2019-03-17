@@ -4,10 +4,12 @@ const CategorySchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
-    }, slug: {
+    },
+    slug: {
         type: String,
         required: true
-    }, date: {
+    },
+    date: {
         type: Date,
         default: Date.now()
     }
