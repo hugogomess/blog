@@ -45,7 +45,7 @@ router.post('/categorias/nova',(req, res) =>{
         };
     
         new Category(category).save().then(() => {
-            req.flash('successMsg', 'Categoria criada com sucesso!');
+            req.flash('successMsg', 'A categoria ' + category.name + ' foi criada com sucesso!');
             res.redirect('/admin/categorias');
         }).catch((err) => {
             req.flash('errorMsg', 'Ocorreu um erro ao tentar criar uma nova categoria, tente novamente mais tarde!');
@@ -80,10 +80,10 @@ router.post('/categorias/editar',(req, res) => {
             category.slug = req.body.slug;
     
             category.save().then(() => {
-                req.flash('successMsg', 'A categoria foi atualizada com sucesso!');
+                req.flash('successMsg', 'A categoria ' + category.name + ' foi atualizada com sucesso!');
                 res.redirect('/admin/categorias');
             }).catch((err) => {
-                req.flash('errorMsg', 'Ocorreu um erro ao tentar atualizar, tente novamente mais tarde!');
+                req.flash('errorMsg', 'Ocorreu um erro ao tentar atualizar , tente novamente mais tarde!');
                 res.redirect('/admin/categorias');
             });
         }).catch((err) => {
@@ -95,7 +95,7 @@ router.post('/categorias/editar',(req, res) => {
 
 router.post('/categorias/excluir',(req, res) => {
     Category.deleteOne({_id: req.body.id}).then(() => {
-        req.flash('successMsg', 'A categoria foi excluida com sucesso!');
+        req.flash('successMsg', 'A categoria ' + req.body.name + ' foi excluida com sucesso!');
         res.redirect('/admin/categorias');
     }).catch((err) => {
         req.flash('errorMsg', 'Ocorreu um erro, tente novamente mais tarde!');

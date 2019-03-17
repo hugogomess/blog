@@ -16,11 +16,11 @@
                 <form action="/admin/categorias/nova" method="post" id="form-new">
                     <div class="form-group">
                         <label for="name-new" class="col-form-label">Nome:</label>
-                        <input type="text" class="form-control" id="name-new" name="name">
+                        <input type="text" class="form-control" id="name-new" required name="name">
                     </div>
                     <div class="form-group">
                         <label for="slug-new" class="col-form-label">Slug:</label>
-                        <input type="text" class="form-control" id="slug-new" name="slug">
+                        <input type="text" class="form-control" id="slug-new" required name="slug">
                     </div>
                 </form>
             </div>
@@ -42,59 +42,60 @@
         <small>Criado em {{date}}</small>
         <br />
         <button type="button" class="btn btn-primary mt-2" data-toggle="modal"
-            data-target="#modal-{{slug}}">Editar</button>
+            data-target="#modal-{{_id}}">Editar</button>
         <button type="button" class="btn btn-danger mt-2" data-toggle="modal"
-            data-target="#exampleModal-{{slug}}-delete">Excluir</button>
+            data-target="#exampleModal-{{_id}}-delete">Excluir</button>
 
-        <div class="modal fade" id="modal-{{slug}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="modal-{{_id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel-{{slug}}">Editar {{name}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel-{{_id}}">Editar {{name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="/admin/categorias/editar" method="post" id="form-{{slug}}">
+                        <form action="/admin/categorias/editar" method="post" id="form-{{_id}}">
                             <div class="form-group">
-                                <label for="name-{{slug}}" class="col-form-label">Nome:</label>
+                                <label for="name-{{_id}}" class="col-form-label">Nome:</label>
                                 <input type="hidden" name="id" value="{{_id}}" />
-                                <input type="text" class="form-control" id="name-{{slug}}" name="name" value="{{name}}">
+                                <input type="text" class="form-control" id="name-{{_id}}" name="name" required value="{{name}}">
                             </div>
                             <div class="form-group">
-                                <label for="slug-{{slug}}" class="col-form-label">Slug:</label>
-                                <input type="text" class="form-control" id="slug-{{slug}}" name="slug" value="{{slug}}">
+                                <label for="slug-{{_id}}" class="col-form-label">Slug:</label>
+                                <input type="text" class="form-control" id="slug-{{_id}}" name="slug" required value="{{slug}}">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary" form="form-{{slug}}">Salvar</button>
+                        <button type="submit" class="btn btn-primary" form="form-{{_id}}">Salvar</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="exampleModal-{{slug}}-delete" tabindex="-1" role="dialog"
+        <div class="modal fade" id="exampleModal-{{_id}}-delete" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel-{{slug}}-delete">Excluir {{name}}</h5>
+                        <h5 class="modal-title" id="exampleModalLabel-{{_id}}-delete">Excluir {{name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         Tem certeza que deseja excluir a categoria {{name}}?
-                        <form action="/admin/categorias/excluir" method="post" id="form-{{slug}}-delete">
+                        <form action="/admin/categorias/excluir" method="post" id="form-{{_id}}-delete">
                             <input type="hidden" name="id" value="{{_id}}" />
+                            <input type="hidden" name="name" value="{{name}}" />
                         </form>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-danger" form="form-{{slug}}-delete">Excluir</button>
+                        <button type="submit" class="btn btn-danger" form="form-{{_id}}-delete">Excluir</button>
                     </div>
                 </div>
             </div>
