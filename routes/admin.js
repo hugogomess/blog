@@ -6,26 +6,48 @@ require('../models/Category');
 const Category = mongoose.model('Category');
 
 router.get('/',(req, res) =>{
-    return res.render('admin/index');
+    res.render('admin/index');
 });
 
 router.get('/categorias',(req, res) =>{
-    return res.render('admin/category');
+    res.render('admin/category');
 });
 
 router.get('/categorias/nova',(req, res) =>{
-    return res.render('admin/add-category');
+    res.render('admin/add-category');
 });
 
 router.post('/categorias/nova',(req, res) =>{
-    const category = {
-        name: req.body.name,
-        slug: req.body.slug
-    };
+    var errors = [];
 
-    new Category(category).save();
+    if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
+        errors.push({message: 'Nome ínvalido!'});
+    }
 
-    return res.redirect('/admin/categorias');
+    if(!req.body.slug || typeof req.body.slug == undefined || req.body.slug == null){
+        errors.push({message: 'Slug ínvalido!'});
+    }
+
+    if(errors.length > 0){
+        res.render('admin/add-category', {errors: errors});
+    } else {
+        const category = {
+            name: req.body.name,
+            slug: req.body.slug
+        };
+    
+        new Category(category).save().then(() => {
+            req.flash('successMsg', 'Categoria criada com sucesso!');
+            res.redirect('/admin/categorias');
+        }).catch((err) => {
+            req.flash('errorMsg', 'Ocorreu um erro ao tentar criar uma nova categoria, tente novamente mais tarde!');
+            res.redirect('/admin/categorias');
+        });
+    
+        
+    }
+    
+    
 });
 
 module.exports = router;
