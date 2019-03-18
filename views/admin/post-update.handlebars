@@ -1,0 +1,26 @@
+<div class="card">
+    <div class="card-body">
+        <h2>Editar Postagem</h2>
+        <form action="/admin/postagens/editar" method="post">
+            <input type="hidden" value="{{post._id}}" name="id"/>
+            <label for="title">Titulo:</label>
+            <input type="text" name="title" id="title" placeholder="Titulo da postagem" value="{{post.title}}" class="form-control" required autofocus />
+            <label for="slug">Slug:</label>
+            <input type="text" name="slug" id="slug" placeholder="Slug da postagem" value="{{post.slug}}" class="form-control" required />
+            <label for="description">Descrição:</label>
+            <input type="text" name="description" id="description" placeholder="Uma breve descrição da postagem" value="{{post.description}}" class="form-control" required />
+            <label for="content">Conteudo:</label>
+            <textarea id="content" name="content" class="form-control" rows="3" placeholder="Insira seu conteudo aqui..." required>{{post.content}}</textarea>
+            <label for="category">Categoria:</label>
+            <select name="category" id="category" class="custom-select">
+                <option value="0" selected>Selecione uma categoria</option>
+                {{#each categories}}
+                    <option value="{{_id}}">{{name}}</option>
+                {{else}}
+                    <option value="1">Nenhuma categoria registrada</option>
+                {{/each}}
+            </select>
+            <button type="submit" class="btn btn-success mt-3">Editar postagem</button>
+        </form>
+    </div>
+</div>
