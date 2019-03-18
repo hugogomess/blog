@@ -3,18 +3,21 @@
   <p class="lead">Esse blog foi desenvolvido por <a href="https://github.com/hugogomess">Hugo Gomes Moreira</a>, Tecnologias usadas: Node.js, Express e MongoDB.</p>
   <hr class="my-4">
   <p>Para acessar o codigo fonte da applicação, <a href="https://github.com/hugogomess/blog">clique aqui.</a></p>
-  <a class="btn btn-primary btn-lg" href="/#" role="button">Crie uma conta</a>
+  <a class="btn btn-success btn-lg" href="/cadastro" role="button">Crie uma conta</a>
 </div>
 <hr>
-<h2>Postagens Recentes</h2>
+<h1>Postagens Recentes</h1>
 
 {{#each posts}}
 <div class="card mt-3">
     <div class="card-body">
-        <h4>{{title}}</h4>
-        <small>Postado na categoria {{category.name}} em {{date}}</small>
-        <br/><br/>
-        <p>{{content}}</p>
+        <h3>{{title}}</h3>
+        <p>{{description}}</p>
+        <a href="/postagens/{{slug}}"><button class="btn btn-primary">Leia mais</button></a>
+        <hr>
+        <small>{{category.name}}</small>
+        <br/>
+        <small>{{date}}</small>
     </div>
 </div>
 {{else}}
