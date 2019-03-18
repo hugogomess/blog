@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const PostingSchema = new Schema({
+const PostSchema = new Schema({
     title: {
         type: String,
         required: true,
@@ -29,4 +29,4 @@ const PostingSchema = new Schema({
     }
 });
 
-mongoose.model('Posting', PostingSchema);
+mongoose.model('Post', PostSchema);
