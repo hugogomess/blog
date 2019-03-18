@@ -1,0 +1,22 @@
+<div class="jumbotron">
+  <h1 class="display-4">Node.js Blog</h1>
+  <p class="lead">Esse blog foi desenvolvido por <a href="https://github.com/hugogomess">Hugo Gomes Moreira</a>, Tecnologias usadas: Node.js, Express e MongoDB.</p>
+  <hr class="my-4">
+  <p>Para acessar o codigo fonte da applicação, <a href="https://github.com/hugogomess/blog">clique aqui.</a></p>
+  <a class="btn btn-primary btn-lg" href="/#" role="button">Crie uma conta</a>
+</div>
+<hr>
+<h2>Postagens Recentes</h2>
+
+{{#each posts}}
+<div class="card mt-3">
+    <div class="card-body">
+        <h4>{{title}}</h4>
+        <small>Postado na categoria {{category.name}} em {{date}}</small>
+        <br/><br/>
+        <p>{{content}}</p>
+    </div>
+</div>
+{{else}}
+    <h4>Nenhuma postagem :(</h4>
+{{/each}}
