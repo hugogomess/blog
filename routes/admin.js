@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const {adminPermissionOnly} = require('../helpers/permission');
 
 require('../models/Category');
 const Category = mongoose.model('Category');
@@ -8,11 +9,11 @@ const Category = mongoose.model('Category');
 require('../models/Post');
 const Post = mongoose.model('Post');
 
-router.get('/',(req, res) =>{
+router.get('/', adminPermissionOnly, (req, res) =>{
     res.render('admin/index');
 });
 
-router.get('/categorias',(req, res) =>{
+router.get('/categorias', adminPermissionOnly, (req, res) =>{
     Category.find().sort({date: 'desc'}).then((categories) => {
         res.render('admin/category', {categories: categories});
     }).catch((err) => {
@@ -21,7 +22,7 @@ router.get('/categorias',(req, res) =>{
     });
 });
 
-router.post('/categorias/nova',(req, res) =>{
+router.post('/categorias/nova', adminPermissionOnly, (req, res) =>{
     var errors = [];
     
     if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
@@ -57,7 +58,7 @@ router.post('/categorias/nova',(req, res) =>{
     }
 });
 
-router.post('/categorias/editar',(req, res) => {
+router.post('/categorias/editar', adminPermissionOnly, (req, res) => {
     var errors = [];
 
     if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
@@ -96,7 +97,7 @@ router.post('/categorias/editar',(req, res) => {
     }    
 });
 
-router.post('/categorias/excluir',(req, res) => {
+router.post('/categorias/excluir', adminPermissionOnly, (req, res) => {
     Category.deleteOne({_id: req.body.id}).then(() => {
         req.flash('successMsg', 'A categoria ' + req.body.name + ' foi excluida com sucesso!');
         res.redirect('/admin/categorias');
@@ -106,7 +107,7 @@ router.post('/categorias/excluir',(req, res) => {
     });
 });
 
-router.get('/postagens',(req, res) => {
+router.get('/postagens', adminPermissionOnly, (req, res) => {
     Post.find().populate('category').sort({date: 'desc'}).then((posts) => {
         res.render('admin/post', {posts: posts});
     }).catch((err) => {
@@ -117,7 +118,7 @@ router.get('/postagens',(req, res) => {
     
 });
 
-router.get('/postagens/nova',(req, res) => {
+router.get('/postagens/nova', adminPermissionOnly, (req, res) => {
     Category.find().then((categories) => {
         res.render('admin/post-add', {categories: categories});
     }).catch((err) => {
@@ -127,7 +128,7 @@ router.get('/postagens/nova',(req, res) => {
     
 });
 
-router.post('/postagens/nova',(req, res) => {
+router.post('/postagens/nova', adminPermissionOnly, (req, res) => {
     var errors = [];
 
     if(!req.body.title || typeof req.body.title == undefined || req.body.title == null){
@@ -179,7 +180,7 @@ router.post('/postagens/nova',(req, res) => {
     }
 });
 
-router.get('/postagens/editar/:id',(req, res) => {
+router.get('/postagens/editar/:id', adminPermissionOnly, (req, res) => {
     Post.findOne({_id: req.params.id}).then((post) => {
         Category.find().then((categories) => {
             res.render('admin/post-update', {post: post, categories: categories});
@@ -196,7 +197,7 @@ router.get('/postagens/editar/:id',(req, res) => {
     });
 });
 
-router.post('/postagens/editar',(req, res) => {
+router.post('/postagens/editar', adminPermissionOnly, (req, res) => {
     Post.findOne({_id: req.body.id}).then((post) => {
         var errors = [];
 
@@ -250,7 +251,7 @@ router.post('/postagens/editar',(req, res) => {
     });
 });
 
-router.post('/postagens/excluir',(req, res) => {
+router.post('/postagens/excluir', adminPermissionOnly, (req, res) => {
     Post.deleteOne({_id: req.body.id}).then(() => {
         req.flash('successMsg', 'A Postagem ' + req.body.title + ' foi excluida com sucesso!');
         res.redirect('/admin/postagens');

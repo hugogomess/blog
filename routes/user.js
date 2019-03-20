@@ -3,15 +3,16 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const {visitorPermissionOnly, loggedPermissionOnly} = require('../helpers/permission');
 
 require('../models/User');
 const User = mongoose.model('User');
 
-router.get('/cadastro',(req, res) => {
+router.get('/cadastro', visitorPermissionOnly, (req, res) => {
     res.render('user/singup');
 });
 
-router.post('/cadastro',(req, res) => {
+router.post('/cadastro', visitorPermissionOnly, (req, res) => {
     var errors = [];
 
     if (!req.body.username || typeof req.body.username == undefined || req.body.username == null){
@@ -36,8 +37,8 @@ router.post('/cadastro',(req, res) => {
         User.findOne({username: req.body.username.toLowerCase()}).then((user) => {
 
             if (user){
-                req.flash('errorMsg', 'Esse nome de usuário já existe!');
-                res.redirect('/cadastro');
+                errors.push({message: 'Esse nome de usuário já existe!'});
+                res.render('user/singup', {errors: errors, user: req.body});
             } else {
                 User.findOne({email: req.body.email.toLowerCase()}).then((user) => {
 
@@ -85,16 +86,22 @@ router.post('/cadastro',(req, res) => {
     
 });
 
-router.get('/entrar', (req, res) => {
+router.get('/entrar', visitorPermissionOnly, (req, res) => {
     res.render('user/login');
 })
 
-router.post('/entrar', (req, res, next) => {
+router.post('/entrar', visitorPermissionOnly, (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/entrar',
         failureFlash: true
     })(req, res, next);
+})
+
+router.get('/sair', loggedPermissionOnly, (req, res) => {
+    req.logout();
+    req.flash('successMsg', 'Deslogado com sucesso!');
+    res.redirect('/');
 })
 
 module.exports = router;
