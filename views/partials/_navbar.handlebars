@@ -8,19 +8,19 @@
       <li class="nav-item">
         <a class="nav-link" href="/categorias">Categorias</a>
       </li>
-      {{#if user.userType}}
+      {{#if user._id}}
         <li class="nav-item">
           <a class="nav-link" href="/admin">Painel de controle</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/sair">Sair</a>
+          <a class="nav-link" href="/user/sair">Sair</a>
         </li>
       {{else}}
         <li class="nav-item">
-          <a class="nav-link" href="/entrar">Entrar</a>
+          <a class="nav-link" href="/user/entrar">Entrar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/cadastro">Cadastre-se</a>
+          <a class="nav-link" href="/user/cadastro">Cadastre-se</a>
         </li>
       {{/if}}
     </ul>

@@ -36,7 +36,7 @@ To check the dependencies, use the commands `$ node -v`, `$ npm -v` and `$ git -
 1. Inside the project root folder, run:
 
   ```
-  $ node index.js
+  $ node app.js
   ```
 
 2. In your browser, open [http://localhost:3000](http://localhost:3000).

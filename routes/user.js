@@ -44,7 +44,7 @@ router.post('/cadastro', visitorPermissionOnly, (req, res) => {
 
                     if (user){
                         req.flash('errorMsg', 'Já existe uma conta com esse email!');
-                        res.redirect('/cadastro');
+                        res.redirect('/user/cadastro');
                     } else {
                         const newUser = new User({
                             username: req.body.username.toLowerCase(),
@@ -57,21 +57,21 @@ router.post('/cadastro', visitorPermissionOnly, (req, res) => {
 
                                 if (error){
                                     req.flash('errorMsg', 'Ocorreu um erro interno!');
-                                    res.redirect('/cadastro');
+                                    res.redirect('/user/cadastro');
                                 } else {
                                     newUser.password = hash;
                                     newUser.save().then(() => {
                                         req.flash('successMsg', 'Conta criada com sucesso!');
-                                        res.redirect('/entrar');
+                                        res.redirect('/user/entrar');
                                     }).catch((err) => {
                                         req.flash('errorMsg', 'Ocorreu um erro interno!');
-                                        res.redirect('/cadastro');
+                                        res.redirect('/user/cadastro');
                                     })
                                 }
                             })
                         }).catch((err) => {
                             req.flash('errorMsg', 'Ocorreu um erro interno!');
-                            res.redirect('/cadastro');
+                            res.redirect('/user/cadastro');
                         })
                     }
                 })
@@ -79,7 +79,7 @@ router.post('/cadastro', visitorPermissionOnly, (req, res) => {
 
         }).catch((err) => {
             req.flash('errorMsg', 'Ocorreu um erro interno!');
-            res.redirect('/cadastro');
+            res.redirect('/user/cadastro');
         })
     }
 
@@ -93,7 +93,7 @@ router.get('/entrar', visitorPermissionOnly, (req, res) => {
 router.post('/entrar', visitorPermissionOnly, (req, res, next) => {
     passport.authenticate('local', {
         successRedirect: '/',
-        failureRedirect: '/entrar',
+        failureRedirect: '/user/entrar',
         failureFlash: true
     })(req, res, next);
 })

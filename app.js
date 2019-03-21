@@ -4,13 +4,10 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('express-session');
 const flash = require('connect-flash');
-const db = require('./db');
+const db = require('./config/db');
+const routes = require('./routes/routes');
 const passport = require('passport');
 require('./config/auth')(passport);
-
-const admin = require('./routes/admin');
-const index = require('./routes/index');
-const user = require('./routes/user');
 
 const app = express();
 
@@ -29,11 +26,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
-
-//Config main routes
-app.use('/', index);
-app.use('/admin', admin);
-app.use('/', user);
+app.use('/', routes);
 
 //view engine setup
 app.engine('handlebars', handlebars({defaultLayout: 'main'}));
