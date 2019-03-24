@@ -28,6 +28,7 @@ To check the dependencies, use the commands `$ node -v`, `$ npm -v` and `$ git -
 3. Solve the dependency of the modules with:
 
   ```
+  $ npm install -g nodemon
   $ npm install
   ```
 
@@ -36,7 +37,7 @@ To check the dependencies, use the commands `$ node -v`, `$ npm -v` and `$ git -
 1. Inside the project root folder, run:
 
   ```
-  $ node app.js
+  $ npm start
   ```
 
 2. In your browser, open [http://localhost:3000](http://localhost:3000).
