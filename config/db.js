@@ -1,18 +1,24 @@
 const mongoose = require('mongoose');
 
-var mongoURI;
+const mongoURL = 'mongodb://localhost:27017/blog';
+const options = {
+    reconnectTries: Number.MAX_VALUE,
+    reconnectInterval: 500,
+    poolSize: 5,
+    useNewUrlParser: true
+};
 
-if (process.env.NODE_ENV == 'production'){
-    mongoURI = 'mongodb+srv://12345:12345@blogapp-prod-cua5t.mongodb.net/test?retryWrites=true';
-} else {
-    mongoURI = 'mongodb://localhost:27017/blog';
-}
+mongoose.set('useCreateIndex', true);
 
 //connect to mongodb
-mongoose.connect(mongoURI, { useNewUrlParser: true}).then(() => {
+mongoose.connect(mongoURL, options).then(() => {
     console.log('Connected to mongodb!');
 }).catch((err) => {
     console.log('Error to connect with mongodb: ' + err);
+});
+
+mongoose.connection.on('error', (err) => {
+    console.log('Error in mongodb connection: ' + err);
 });
 
 module.exports = mongoose;
