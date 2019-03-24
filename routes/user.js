@@ -12,7 +12,7 @@ router.get('/cadastro', visitorPermissionOnly, (req, res) => {
     res.render('user/singup');
 });
 
-router.post('/cadastro', visitorPermissionOnly, (req, res) => {
+router.post('/cadastro', visitorPermissionOnly, async(req, res) => {
     var errors = [];
 
     if (!req.body.username || typeof req.body.username == undefined || req.body.username == null){
@@ -34,13 +34,13 @@ router.post('/cadastro', visitorPermissionOnly, (req, res) => {
     if (errors.length > 0){
         res.render('user/singup', {errors: errors});
     } else {
-        User.findOne({username: req.body.username.toLowerCase()}).then((user) => {
+        await User.findOne({username: req.body.username.toLowerCase()}).then( async(user) => {
 
             if (user){
                 errors.push({message: 'Esse nome de usuário já existe!'});
                 res.render('user/singup', {errors: errors, user: req.body});
             } else {
-                User.findOne({email: req.body.email.toLowerCase()}).then((user) => {
+                User.findOne({email: req.body.email.toLowerCase()}).then( async(user) => {
 
                     if (user){
                         req.flash('errorMsg', 'Já existe uma conta com esse email!');
@@ -52,15 +52,15 @@ router.post('/cadastro', visitorPermissionOnly, (req, res) => {
                             password: req.body.password
                         })
 
-                        bcrypt.genSalt(10, (error, salt) => {
-                            bcrypt.hash(newUser.password, salt, (error, hash) => {
+                        await bcrypt.genSalt(10, async(error, salt) => {
+                            await bcrypt.hash(newUser.password, salt, async(error, hash) => {
 
                                 if (error){
                                     req.flash('errorMsg', 'Ocorreu um erro interno!');
                                     res.redirect('/user/cadastro');
                                 } else {
                                     newUser.password = hash;
-                                    newUser.save().then(() => {
+                                    await newUser.save().then(() => {
                                         req.flash('successMsg', 'Conta criada com sucesso!');
                                         res.redirect('/user/entrar');
                                     }).catch((err) => {
@@ -90,16 +90,16 @@ router.get('/entrar', visitorPermissionOnly, (req, res) => {
     res.render('user/login');
 })
 
-router.post('/entrar', visitorPermissionOnly, (req, res, next) => {
-    passport.authenticate('local', {
+router.post('/entrar', visitorPermissionOnly, async(req, res, next) => {
+    await passport.authenticate('local', {
         successRedirect: '/',
         failureRedirect: '/user/entrar',
         failureFlash: true
     })(req, res, next);
 })
 
-router.get('/sair', loggedPermissionOnly, (req, res) => {
-    req.logout();
+router.get('/sair', loggedPermissionOnly, async(req, res) => {
+    await req.logout();
     req.flash('successMsg', 'Deslogado com sucesso!');
     res.redirect('/');
 })

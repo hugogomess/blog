@@ -9,8 +9,8 @@ const Post = mongoose.model('Post');
 require('../../models/Category');
 const Category = mongoose.model('Category');
 
-router.get('/', adminPermissionOnly, (req, res) => {
-    Post.find().populate('category').sort({date: 'desc'}).then((posts) => {
+router.get('/', adminPermissionOnly, async(req, res) => {
+    await Post.find().populate('category').sort({date: 'desc'}).then((posts) => {
         res.render('admin/post', {posts: posts});
     }).catch((err) => {
         req.flash('errorMsg', 'Ocorreu um erro ao tentar listar postagens!');
@@ -18,8 +18,8 @@ router.get('/', adminPermissionOnly, (req, res) => {
     });  
 });
 
-router.get('/nova', adminPermissionOnly, (req, res) => {
-    Category.find().then((categories) => {
+router.get('/nova', adminPermissionOnly, async(req, res) => {
+    await Category.find().then((categories) => {
         res.render('admin/post-add', {categories: categories});
     }).catch((err) => {
         req.flash('errorMsg', 'Ocorreu um erro ao carregar o formulario!');
@@ -28,7 +28,7 @@ router.get('/nova', adminPermissionOnly, (req, res) => {
     
 });
 
-router.post('/nova', adminPermissionOnly, (req, res) => {
+router.post('/nova', adminPermissionOnly, async(req, res) => {
     var errors = [];
 
     if(!req.body.title || typeof req.body.title == undefined || req.body.title == null){
@@ -70,7 +70,7 @@ router.post('/nova', adminPermissionOnly, (req, res) => {
             category: req.body.category,
         }
 
-        new Post(post).save().then(() => {
+        await new Post(post).save().then(() => {
             req.flash('successMsg', 'Postagem criada com sucesso!');
             res.redirect('/admin/postagens');
         }).catch((err) => {
@@ -80,9 +80,9 @@ router.post('/nova', adminPermissionOnly, (req, res) => {
     }
 });
 
-router.get('/editar/:id', adminPermissionOnly, (req, res) => {
-    Post.findOne({_id: req.params.id}).then((post) => {
-        Category.find().then((categories) => {
+router.get('/editar/:id', adminPermissionOnly, async(req, res) => {
+    await Post.findOne({_id: req.params.id}).then( async(post) => {
+        await Category.find().then((categories) => {
             res.render('admin/post-update', {post: post, categories: categories});
 
         }).catch((err) => {
@@ -97,8 +97,8 @@ router.get('/editar/:id', adminPermissionOnly, (req, res) => {
     });
 });
 
-router.post('/editar', adminPermissionOnly, (req, res) => {
-    Post.findOne({_id: req.body.id}).then((post) => {
+router.post('/editar', adminPermissionOnly, async(req, res) => {
+    await Post.findOne({_id: req.body.id}).then( async(post) => {
         var errors = [];
 
         if(!req.body.title || typeof req.body.title == undefined || req.body.title == null){
@@ -138,7 +138,7 @@ router.post('/editar', adminPermissionOnly, (req, res) => {
             post.content = req.body.content;
             post.category = req.body.category;
 
-            post.save().then(() => {
+            await post.save().then(() => {
                 req.flash('successMsg', 'Postagem atualizada com sucesso!');
                 res.redirect('/admin/postagens');
             }).catch((err) => {
@@ -151,8 +151,8 @@ router.post('/editar', adminPermissionOnly, (req, res) => {
     });
 });
 
-router.post('/excluir', adminPermissionOnly, (req, res) => {
-    Post.deleteOne({_id: req.body.id}).then(() => {
+router.post('/excluir', adminPermissionOnly, async(req, res) => {
+    await Post.deleteOne({_id: req.body.id}).then(() => {
         req.flash('successMsg', 'A Postagem ' + req.body.title + ' foi excluida com sucesso!');
         res.redirect('/admin/postagens');
     }).catch((err) => {

@@ -6,8 +6,8 @@ const {adminPermissionOnly} = require('../../helpers/permission');
 require('../../models/Category');
 const Category = mongoose.model('Category');
 
-router.get('/', adminPermissionOnly, (req, res) =>{
-    Category.find().sort({date: 'desc'}).then((categories) => {
+router.get('/', adminPermissionOnly, async(req, res) =>{
+    await Category.find().sort({date: 'desc'}).then((categories) => {
         res.render('admin/category', {categories: categories});
     }).catch((err) => {
         req.flash('errorMsg', 'Ocorreu um erro ao listar as categorias, tente novamente mais tarde!');
@@ -15,7 +15,7 @@ router.get('/', adminPermissionOnly, (req, res) =>{
     });
 });
 
-router.post('/nova', adminPermissionOnly, (req, res) =>{
+router.post('/nova', adminPermissionOnly, async(req, res) =>{
     var errors = [];
     
     if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
@@ -41,7 +41,7 @@ router.post('/nova', adminPermissionOnly, (req, res) =>{
             slug: req.body.slug
         };
     
-        new Category(category).save().then(() => {
+        await new Category(category).save().then(() => {
             req.flash('successMsg', 'A categoria ' + category.name + ' foi criada com sucesso!');
             res.redirect('/admin/categorias');
         }).catch((err) => {
@@ -51,7 +51,7 @@ router.post('/nova', adminPermissionOnly, (req, res) =>{
     }
 });
 
-router.post('/editar', adminPermissionOnly, (req, res) => {
+router.post('/editar', adminPermissionOnly, async(req, res) => {
     var errors = [];
 
     if(!req.body.name || typeof req.body.name == undefined || req.body.name == null){
@@ -72,11 +72,11 @@ router.post('/editar', adminPermissionOnly, (req, res) => {
         res.redirect('/admin/categorias');
 
     } else {
-        Category.findOne({_id: req.body.id}).then((category) => {
+        await Category.findOne({_id: req.body.id}).then( async(category) => {
             category.name = req.body.name;
             category.slug = req.body.slug;
     
-            category.save().then(() => {
+             await category.save().then(() => {
                 req.flash('successMsg', 'A categoria ' + category.name + ' foi atualizada com sucesso!');
                 res.redirect('/admin/categorias');
             }).catch((err) => {
@@ -90,8 +90,8 @@ router.post('/editar', adminPermissionOnly, (req, res) => {
     }    
 });
 
-router.post('/excluir', adminPermissionOnly, (req, res) => {
-    Category.deleteOne({_id: req.body.id}).then(() => {
+router.post('/excluir', adminPermissionOnly, async(req, res) => {
+    await Category.deleteOne({_id: req.body.id}).then(() => {
         req.flash('successMsg', 'A categoria ' + req.body.name + ' foi excluida com sucesso!');
         res.redirect('/admin/categorias');
     }).catch((err) => {

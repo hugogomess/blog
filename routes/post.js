@@ -9,8 +9,8 @@ router.get('/',(req, res) => {
     res.redirect('/');
 });
 
-router.get('/:slug',(req, res) => {
-    Post.findOne({slug: req.params.slug}).populate('category').then((post) => {
+router.get('/:slug', async(req, res) => {
+    await Post.findOne({slug: req.params.slug}).populate('category').then((post) => {
 
         if (post) {
             res.render('post/index', {post: post});
