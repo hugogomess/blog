@@ -28,7 +28,6 @@ To check the dependencies, use the commands `$ node -v`, `$ npm -v` and `$ git -
 3. Solve the dependency of the modules with:
 
   ```
-  $ npm install -g nodemon
   $ npm install
   ```
 
