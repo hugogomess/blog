@@ -15,7 +15,7 @@ const app = express();
 
 //Config middlewares
 app.use(logger('dev'));
-app.use(session({ secret: '@@NãoEXIStÉ-seguRaçajjk', resave: true, saveUninitialized: true }));
+app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
