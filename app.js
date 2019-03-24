@@ -7,15 +7,15 @@ const flash = require('connect-flash');
 const db = require('./config/db');
 const routes = require('./routes/routes');
 const passport = require('passport');
-var createError = require('http-errors');
-var logger = require('morgan');
+const createError = require('http-errors');
+const logger = require('morgan');
 require('./config/auth')(passport);
 
 const app = express();
 
 //Config middlewares
 app.use(logger('dev'));
-app.use(session({ secret: 'keyboard cat', cookie: { maxAge: 60000 }}));
+app.use(session({ secret: 'foo', resave: true, saveUninitialized: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
