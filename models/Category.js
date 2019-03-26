@@ -7,7 +7,9 @@ const CategorySchema = new mongoose.Schema({
     },
     slug: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true,
+        unique: true
     },
     date: {
         type: Date,

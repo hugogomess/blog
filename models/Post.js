@@ -8,7 +8,9 @@ const PostSchema = new Schema({
     },
     slug: {
         type: String,
-        required: true
+        required: true,
+        lowercase: true,
+        unique: true
     },
     description: {
         type: String,
